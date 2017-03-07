@@ -1,5 +1,15 @@
 # Docker uwegerdes/php-fpm
 
+## Build
+
+Build the image with (mind the dot):
+
+```bash
+$ docker build -t uwegerdes/php-fpm .
+```
+
+## Usage
+
 Make sure you run `uwegerdes/mysql` and `uwegerdes/mail` and have `uwegerdes/data` started with a htdocs directory on your system.
 
 Now run the php-fpm container:
