@@ -18,9 +18,12 @@ RUN apt-get update && \
 	find /etc/php/ -name 'php-fpm.conf' -type f -exec sed -i 's/;daemonize = yes/daemonize = no/' {} \; && \
 	find /etc/php/ -name 'pool.d' -type d -exec mv /home/www.conf {} \;
 
+COPY start.sh /start.sh
+RUN chmod a+x /start.sh
+
 VOLUME [ "/run/php" ]
 
 EXPOSE 9000
 
-CMD ["/usr/sbin/php-fpm7.0"]
+CMD ["/start.sh"]
 
