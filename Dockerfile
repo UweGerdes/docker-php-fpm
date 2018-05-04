@@ -1,5 +1,9 @@
+# php-fpm image for nginx
+
 FROM uwegerdes/baseimage
 MAINTAINER Uwe Gerdes <entwicklung@uwegerdes.de>
+
+COPY www.conf /home/www.conf
 
 RUN apt-get update && \
 	apt-get install -y \
@@ -10,13 +14,13 @@ RUN apt-get update && \
 					php-pear \
 					php-net-smtp && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-	sed 's/;daemonize = yes/daemonize = no/' -i /etc/php/7.0/fpm/php-fpm.conf && \
-	mkdir -p /run/php
-
-COPY www.conf /etc/php/7.0/fpm/pool.d/www.conf
+	mkdir -p /run/php && \
+	find /etc/php/ -name 'php-fpm.conf' -type f -exec sed -i 's/;daemonize = yes/daemonize = no/' {} \; && \
+	find /etc/php/ -name 'pool.d' -type d -exec mv /home/www.conf {} \;
 
 VOLUME [ "/run/php" ]
 
 EXPOSE 9000
 
 CMD ["/usr/sbin/php-fpm7.0"]
+
