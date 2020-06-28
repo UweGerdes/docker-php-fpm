@@ -10,22 +10,24 @@ $ docker build -t uwegerdes/php-fpm .
 
 ## Usage
 
+Normal use is with the `docker-compose.yaml` file.
+
 Make sure you run `uwegerdes/mysql` and `uwegerdes/mail` and have `uwegerdes/data` started with a htdocs directory on your system.
 
 Now run the php-fpm container:
 
 ```bash
 $ docker run -d \
-	--volumes-from data \
+	-v $(pwd)/htdocs:/var/www/htdocs \
 	--link mysql \
 	--link mail \
 	--name php-fpm \
 	uwegerdes/php-fpm
 ```
 
-`php-fpm` needs the php files from data (the server only sends the http request) and the application uses network to mysql and mail server.
+`php-fpm` needs the php files from `./htdocs` and the application uses network to mysql and mail server.
 
-It shares the directory `/run/php` to allow socket communication for the `uwegerdes/nginx` container.
+It opens port 9000 to allow communication for the `uwegerdes/nginx` container.
 
 To see what is happening inside the running container you might want to:
 
